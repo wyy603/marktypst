@@ -3,7 +3,7 @@ import { insertAfter, operateClassName } from '../../../utils/domManipulate'
 import { CLASS_OR_ID } from '../../../config'
 
 export default function loadImageAsync (imageInfo, attrs, className, imageClass) {
-  const { src, isUnknownType } = imageInfo
+  const { src, isUnknownType } = imageInfo // src is filepath
   let id
   let isSuccess
   let w

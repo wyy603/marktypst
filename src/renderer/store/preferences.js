@@ -93,7 +93,11 @@ const state = {
       branch: ''
     }
   },
-  cliScript: ''
+  cliScript: '',
+
+  // typst
+  typstPackagesPath: '',
+  typstUserPackagesPath: ''
 }
 
 const getters = {}
@@ -135,6 +139,14 @@ const actions = {
 
   SET_IMAGE_FOLDER_PATH ({ commit }, value) {
     ipcRenderer.send('mt::ask-for-modify-image-folder-path', value)
+  },
+
+  SET_TYPST_PACKAGES_PATH({ commit }, value) {
+    ipcRenderer.send('mt::ask-for-modify-typst-packages-path', value)
+  },
+
+  SET_TYPST_LOCAL_PACKAGES_PATH({ commit }, value) {
+    ipcRenderer.send('mt::ask-for-modify-typst-local-packages-path', value)
   },
 
   SELECT_DEFAULT_DIRECTORY_TO_OPEN ({ commit }) {

@@ -1,8 +1,8 @@
 import { $typst } from '@myriaddreamin/typst.ts/dist/esm/contrib/all-in-one-lite.bundle.js'
 import { createTypstCompiler } from '@myriaddreamin/typst.ts/dist/esm/compiler.mjs';
 import { createTypstRenderer } from '@myriaddreamin/typst.ts/dist/esm/renderer.mjs';
-import { h, htmlToVNode } from '../snabbdom'
-import { CLASS_OR_ID } from '../../../config'
+import { h, htmlToVNode } from './snabbdom'
+import { CLASS_OR_ID } from '../../config'
 import { fromHtmlIsomorphic } from 'hast-util-from-html-isomorphic'
 
 // let compiler = null
@@ -21,11 +21,11 @@ async function initializeTypst() {
   try {
     $typst.setCompilerInitOptions({
       getModule: () =>
-        '@myriaddreamin/typst-ts-web-compiler/pkg/typst_ts_web_compiler_bg.wasm'
+        'https://cdn.jsdelivr.net/npm/@myriaddreamin/typst-ts-web-compiler/pkg/typst_ts_web_compiler_bg.wasm'
     })
     $typst.setRendererInitOptions({
       getModule: () =>
-        '@myriaddreamin/typst-ts-renderer/pkg/typst_ts_renderer_bg.wasm'
+        'https://cdn.jsdelivr.net/npm/@myriaddreamin/typst-ts-renderer/pkg/typst_ts_renderer_bg.wasm'
     })
   } catch (err) {
     

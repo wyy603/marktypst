@@ -109,15 +109,37 @@
         ></cur-select>
       </template>
     </compound>
+
+    <div>
+      <h5>Math</h5>
+
+      <text-box description="typstPackagesPath" :input="typstPackagesPath"
+        :regexValidator="/^(?:$|([a-zA-Z]:)?[\/\\].*$)/" :defaultValue="typstPackagesPathPlaceholder"
+        :onChange="value => modifyTypstPackagesPath(value)"></text-box>
+      <div>
+        <el-button size="mini" @click="modifyTypstPackagesPath(undefined)">Open...</el-button>
+        <el-button size="mini" @click="openTypstPackagesPath()">Show in Folder</el-button>
+      </div>
+
+      <text-box description="typstUserPackagesPath" :input="typstUserPackagesPath"
+        :regexValidator="/^(?:$|([a-zA-Z]:)?[\/\\].*$)/" :defaultValue="typstUserPackagesPathPlaceholder"
+        :onChange="value => modifyTypstUserPackagesPath(value)"></text-box>
+      <div>
+        <el-button size="mini" @click="modifyTypstUserPackagesPath(undefined)">Open...</el-button>
+        <el-button size="mini" @click="openTypstUserPackagesPath()">Show in Folder</el-button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import { shell } from 'electron'
 import Compound from '../common/compound'
 import Separator from '../common/separator'
 import { mapState } from 'vuex'
 import Bool from '../common/bool'
 import CurSelect from '../common/select'
+import TextBox from '@/prefComponents/common/textBox'
 import {
   bulletListMarkerOptions,
   orderListDelimiterOptions,
@@ -132,7 +154,8 @@ export default {
     Compound,
     Separator,
     Bool,
-    CurSelect
+    CurSelect,
+    TextBox
   },
   data () {
     this.bulletListMarkerOptions = bulletListMarkerOptions
@@ -145,6 +168,8 @@ export default {
   },
   computed: {
     ...mapState({
+      typstPackagesPath: state => state.preferences.typstPackagesPath,
+      typstUserPackagesPath: state => state.preferences.typstUserPackagesPath,
       preferLooseListItem: state => state.preferences.preferLooseListItem,
       bulletListMarker: state => state.preferences.bulletListMarker,
       orderListDelimiter: state => state.preferences.orderListDelimiter,
@@ -156,12 +181,34 @@ export default {
       isHtmlEnabled: state => state.preferences.isHtmlEnabled,
       isGitlabCompatibilityEnabled: state => state.preferences.isGitlabCompatibilityEnabled,
       sequenceTheme: state => state.preferences.sequenceTheme
-    })
+    }),
+    typstPackagesPathPlaceholder: {
+      get: function () {
+        return this.$store.state.preferences.typstPackagesPath || ''
+      }
+    },
+    typstUserPackagesPathPlaceholder: {
+      get: function () {
+        return this.$store.state.preferences.typstUserPackagesPath || ''
+      }
+    },
   },
   methods: {
     onSelectChange (type, value) {
       this.$store.dispatch('SET_SINGLE_PREFERENCE', { type, value })
-    }
+    },
+    modifyTypstPackagesPath (value) {
+      return this.$store.dispatch('SET_TYPST_PACKAGES_PATH', value)
+    },
+    modifyTypstUserPackagesPath (value) {
+      return this.$store.dispatch('SET_TYPST_LOCAL_PACKAGES_PATH', value)
+    },
+    openTypstPackagesPath (path) {
+      shell.openPath(this.typstPackagesPath)
+    },
+    openTypstUserPackagesPath (value) {
+      shell.openPath(this.typstUserPackagesPath)
+    },
   }
 }
 </script>

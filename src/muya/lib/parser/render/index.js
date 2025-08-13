@@ -100,6 +100,7 @@ class StateRender {
 
   async renderTypst() {
     console.log("renderTypst typstCache", this.typstCache.length)
+    console.log("options:", this.muya.options)
     if (this.typstCache.length) {
       for (const value of this.typstCache) {
         console.log("value", value)

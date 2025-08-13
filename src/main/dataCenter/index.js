@@ -33,6 +33,8 @@ class DataCenter extends EventEmitter {
     const defaultData = {
       imageFolderPath: path.join(this.userDataPath, 'images'),
       screenshotFolderPath: path.join(this.userDataPath, 'screenshot'),
+      typstPackagesPath: path.join(process.env.APPDATA, 'Local/typst/packages/'),
+      typstUserPackagesPath: path.join(process.env.APPDATA, 'Roaming/typst/packages/'),
       webImages: [],
       cloudImages: [],
       currentUploader: 'none',
@@ -175,6 +177,36 @@ class DataCenter extends EventEmitter {
       }
       if (imagePath) {
         this.setItem('imageFolderPath', imagePath)
+      }
+    })
+
+    ipcMain.on('mt::ask-for-modify-typst-packages-path', async (e, folderPath) => {
+      if (!folderPath) {
+        const win = BrowserWindow.fromWebContents(e.sender)
+        const { filePaths } = await dialog.showOpenDialog(win, {
+          properties: ['openDirectory', 'createDirectory']
+        })
+        if (filePaths && filePaths[0]) {
+          folderPath = filePaths[0]
+        }
+      }
+      if (folderPath) {
+        this.setItem('typstPackagesPath', folderPath)
+      }
+    })
+
+    ipcMain.on('mt::ask-for-modify-typst-local-packages-path', async (e, folderPath) => {
+      if (!folderPath) {
+        const win = BrowserWindow.fromWebContents(e.sender)
+        const { filePaths } = await dialog.showOpenDialog(win, {
+          properties: ['openDirectory', 'createDirectory']
+        })
+        if (filePaths && filePaths[0]) {
+          folderPath = filePaths[0]
+        }
+      }
+      if (folderPath) {
+        this.setItem('typstUserPackagesPath', folderPath)
       }
     })
 
