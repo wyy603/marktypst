@@ -1,7 +1,9 @@
 import katex from 'katex'
+import { $typst } from '@myriaddreamin/typst.ts/dist/esm/contrib/all-in-one-lite.bundle.js'
 import 'katex/dist/contrib/mhchem.min.js'
 import { CLASS_OR_ID } from '../../../config'
 import { htmlToVNode } from '../snabbdom'
+import { renderToSVGString } from '../typst'
 
 import 'katex/dist/katex.min.css'
 
@@ -29,16 +31,23 @@ export default function displayMath (h, cursor, block, token, outerClass) {
   if (loadMathMap.has(key)) {
     mathVnode = loadMathMap.get(key)
   } else {
-    try {
-      const html = katex.renderToString(math, {
-        displayMode
-      })
-      mathVnode = htmlToVNode(html)
-      loadMathMap.set(key, mathVnode)
-    } catch (err) {
-      mathVnode = '< Invalid Mathematical Formula >'
-      previewSelector += `.${CLASS_OR_ID.AG_MATH_ERROR}`
-    }
+    //console.log("math", math)
+    //console.log(`#${block.key}`)
+    renderToSVGString(math, displayMode).then((res) => {
+      mathVnode = res.vNode
+      loadMathMap.set(key, mathVnode);
+    });
+
+    // try {
+    //   const html = katex.renderToString(math, {
+    //     displayMode
+    //   })
+    //   mathVnode = htmlToVNode(html)
+    //   loadMathMap.set(key, mathVnode)
+    // } catch (err) {
+    //   mathVnode = math
+    //   previewSelector += `.${CLASS_OR_ID.AG_MATH_ERROR}`
+    // }
   }
 
   return [

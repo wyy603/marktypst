@@ -161,17 +161,25 @@ export default function renderLeafBlock (parent, block, activeBlocks, matches, u
         } else if (loadMathMap.has(key)) {
           children = loadMathMap.get(key)
         } else {
-          try {
-            const html = katex.renderToString(code, {
-              displayMode: true
-            })
+          children = 'Loading...'
+          this.typstCache.set(`#${block.key}`, {
+            mathKey: key,
+            code,
+            displayMode: true
+          })
+          //console.log("typstCache", this.typstCache.size)
+          // try {
+          //   const html = katex.renderToString(code, {
+          //     displayMode: true
+          //   })
 
-            children = htmlToVNode(html)
-            loadMathMap.set(key, children)
-          } catch (err) {
-            children = '< Invalid Mathematical Formula >'
-            selector += `.${CLASS_OR_ID.AG_MATH_ERROR}`
-          }
+          //   children = htmlToVNode(html)
+          //   loadMathMap.set(key, children)
+          // } catch (err) {
+          //   children = '< Invalid Mathematical Formula (renderLeafBlock) >'
+          //   selector += `.${CLASS_OR_ID.AG_MATH_ERROR}`
+          //   console.log('children', children, 'selector', selector)
+          // }
         }
         break
       }

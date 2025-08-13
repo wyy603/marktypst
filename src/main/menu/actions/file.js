@@ -161,16 +161,16 @@ const handleResponseForSave = async (e, { id, filename, markdown, pathname, opti
 const showUnsavedFilesMessage = async (win, files) => {
   const { response } = await dialog.showMessageBox(win, {
     type: 'warning',
-    buttons: ['Save', 'Cancel', 'Don\'t save'],
+    buttons: ['Save', 'Don\'t save'],
     defaultId: 0,
     message: `Do you want to save the changes you made to ${files.length} ${files.length === 1 ? 'file' : 'files'}?\n\n${files.map(f => f.filename).join('\n')}`,
     detail: 'Your changes will be lost if you don\'t save them.',
-    cancelId: 1,
+    cancelId: 2,
     noLink: true
   })
 
   switch (response) {
-    case 2:
+    case 1:
       return { needSave: false }
     case 0:
       return new Promise((resolve, reject) => {

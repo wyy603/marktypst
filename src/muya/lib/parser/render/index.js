@@ -5,6 +5,7 @@ import { patch, toVNode, toHTML, h } from './snabbdom'
 import { beginRules } from '../rules'
 import renderInlines from './renderInlines'
 import renderBlock from './renderBlock'
+import { renderToSVGString } from './typst'
 
 class StateRender {
   constructor (muya) {
@@ -15,6 +16,8 @@ class StateRender {
     this.loadMathMap = new Map()
     this.mermaidCache = new Map()
     this.diagramCache = new Map()
+    this.typstCache = new Map()
+    this.typstInitialized = false
     this.tokenCache = new Map()
     this.labels = new Map()
     this.urlMap = new Map()
@@ -93,6 +96,24 @@ class StateRender {
       selector += `.${CLASS_OR_ID.AG_SELECTED}`
     }
     return selector
+  }
+
+  async renderTypst() {
+    //console.log("renderTypst typstCache", this.typstCache.size)
+    if (this.typstCache.size) {
+      for (const [key, value] of this.typstCache.entries()) {
+        const { mathKey, code, displayMode } = value
+        const target = document.querySelector(key)
+        if (!target) {
+          continue
+        }
+        const res = await renderToSVGString(code, displayMode)
+        //console.log("renderTypst get vNode", res.vNode)
+        target.innerHTML = toHTML(res.vNode)
+        this.loadMathMap.set(mathKey, res.vNode)
+      }
+      this.typstCache.clear()
+    }
   }
 
   async renderMermaid () {
@@ -182,6 +203,7 @@ class StateRender {
 
     patch(oldVdom, newVdom)
     this.renderMermaid()
+    this.renderTypst()
     this.renderDiagram()
     this.codeCache.clear()
   }
@@ -191,7 +213,7 @@ class StateRender {
     const cursorOutMostBlock = activeBlocks[activeBlocks.length - 1]
     // If cursor is not in render blocks, need to render cursor block independently
     const needRenderCursorBlock = blocks.indexOf(cursorOutMostBlock) === -1
-    const newVnode = h('section', blocks.map(block => this.renderBlock(null, block, activeBlocks, matches)))
+    const newVnode = h('section', (blocks.map(block => this.renderBlock(null, block, activeBlocks, matches))))
     const html = toHTML(newVnode).replace(/^<section>([\s\S]+?)<\/section>$/, '$1')
 
     const needToRemoved = []
@@ -226,6 +248,7 @@ class StateRender {
     }
 
     this.renderMermaid()
+    this.renderTypst()
     this.renderDiagram()
     this.codeCache.clear()
   }
@@ -244,6 +267,7 @@ class StateRender {
     const oldVdom = toVNode(rootDom)
     patch(oldVdom, newVdom)
     this.renderMermaid()
+    this.renderTypst()
     this.renderDiagram()
     this.codeCache.clear()
   }
