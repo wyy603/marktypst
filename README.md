@@ -1,5 +1,7 @@
 Check original [README](README.md)
 
+I'm not familiar with rules of github forks, if I do something wrong please tell me.
+
 ## intro
 
 This project wants to integrate Marktext with Tinymist. It aims to achieve the following goals:
