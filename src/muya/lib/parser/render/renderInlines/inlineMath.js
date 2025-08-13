@@ -31,12 +31,20 @@ export default function displayMath (h, cursor, block, token, outerClass) {
   if (loadMathMap.has(key)) {
     mathVnode = loadMathMap.get(key)
   } else {
+    console.log("inline math", key)
+    this.typstCache.push({
+      domKey: `#${block.key}`,
+      mathKey: key,
+      code: math,
+      displayMode: 0
+    })
+    mathVnode = null
     //console.log("math", math)
     //console.log(`#${block.key}`)
-    renderToSVGString(math, displayMode).then((res) => {
-      mathVnode = res.vNode
-      loadMathMap.set(key, mathVnode);
-    });
+    // renderToSVGString(math, displayMode).then((res) => {
+    //   mathVnode = res.vNode
+    //   loadMathMap.set(key, mathVnode);
+    // });
 
     // try {
     //   const html = katex.renderToString(math, {

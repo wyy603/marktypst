@@ -4,6 +4,7 @@ const FUNCTION_TYPE_LANG = {
   mermaid: 'yaml',
   sequence: 'yaml',
   plantuml: 'yaml',
+  typst: 'yaml',
   'vega-lite': 'yaml',
   html: 'markup'
 }

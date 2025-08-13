@@ -478,6 +478,7 @@ figure.active .ag-container-icon {
 
 figure[data-role=SEQUENCE]:not(.ag-active):hover,
 figure[data-role=PLANTUML]:not(.ag-active):hover,
+figure[data-role=TYPST]:not(.ag-active):hover,
 figure[data-role=FLOWCHART]:not(.ag-active):hover,
 figure[data-role=VEGA-LITE]:not(.ag-active):hover,
 figure[data-role=MERMAID]:not(.ag-active):hover,
@@ -488,6 +489,7 @@ figure[data-role=HTML]:not(.ag-active):hover {
 
 figure[data-role=SEQUENCE]:not(.ag-active):hover .ag-container-icon,
 figure[data-role=PLANTUML]:not(.ag-active):hover .ag-container-icon,
+figure[data-role=TYPST]:not(.ag-active):hover .ag-container-icon,
 figure[data-role=FLOWCHART]:not(.ag-active):hover .ag-container-icon,
 figure[data-role=VEGA-LITE]:not(.ag-active):hover .ag-container-icon,
 figure[data-role=MERMAID]:not(.ag-active):hover .ag-container-icon,
@@ -690,6 +692,10 @@ pre.ag-active[data-role="plantuml"]::before {
   content: '``` plantuml';
 }
 
+pre.ag-active[data-role="typst"]::before {
+  content: '``` typst';
+}
+
 pre.ag-active[data-role="vega-lite"]::before {
   content: '``` vega-lite';
 }
@@ -700,6 +706,7 @@ pre.ag-active[data-role="mermaid"]::after,
 pre.ag-active[data-role="flowchart"]::after,
 pre.ag-active[data-role="sequence"]::after,
 pre.ag-active[data-role="plantuml"]::after,
+pre.ag-active[data-role="typst"]::after,
 pre.ag-active[data-role="vega-lite"]::after {
   content: '```';
 }
@@ -714,6 +721,8 @@ pre.ag-active[data-role="sequence"]::before,
 pre.ag-active[data-role="sequence"]::after,
 pre.ag-active[data-role="plantuml"]::before,
 pre.ag-active[data-role="plantuml"]::after,
+pre.ag-active[data-role="typst"]::before,
+pre.ag-active[data-role="typst"]::after,
 pre.ag-active[data-role="vega-lite"]::before,
 pre.ag-active[data-role="vega-lite"]::after,
 pre.ag-active.ag-fence-code::before,
@@ -731,6 +740,7 @@ pre.ag-active[data-role="mermaid"]::before,
 pre.ag-active[data-role="flowchart"]::before,
 pre.ag-active[data-role="sequence"]::before,
 pre.ag-active[data-role="plantuml"]::before,
+pre.ag-active[data-role="typst"]::before,
 pre.ag-active[data-role="vega-lite"]::before,
 pre.ag-active.ag-multiple-math::before,
 pre.ag-active.ag-fence-code::before {
@@ -742,6 +752,7 @@ pre.ag-active[data-role="mermaid"]::after,
 pre.ag-active[data-role="flowchart"]::after,
 pre.ag-active[data-role="sequence"]::after,
 pre.ag-active[data-role="plantuml"]::after,
+pre.ag-active[data-role="typst"]::after,
 pre.ag-active[data-role="vega-lite"]::after,
 pre.ag-active.ag-multiple-math::after,
 pre.ag-active.ag-fence-code::after {

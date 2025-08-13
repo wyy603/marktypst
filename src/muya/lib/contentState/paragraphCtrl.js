@@ -515,6 +515,7 @@ const paragraphCtrl = ContentState => {
       case 'sequence':
       case 'plantuml':
       case 'mermaid':
+      case 'typst': 
       case 'vega-lite':
         this.insertContainerBlock(paraType, block)
         break

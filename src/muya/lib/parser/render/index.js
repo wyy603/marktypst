@@ -16,7 +16,7 @@ class StateRender {
     this.loadMathMap = new Map()
     this.mermaidCache = new Map()
     this.diagramCache = new Map()
-    this.typstCache = new Map()
+    this.typstCache = []
     this.typstInitialized = false
     this.tokenCache = new Map()
     this.labels = new Map()
@@ -99,20 +99,39 @@ class StateRender {
   }
 
   async renderTypst() {
-    //console.log("renderTypst typstCache", this.typstCache.size)
-    if (this.typstCache.size) {
-      for (const [key, value] of this.typstCache.entries()) {
-        const { mathKey, code, displayMode } = value
-        const target = document.querySelector(key)
+    console.log("renderTypst typstCache", this.typstCache.length)
+    if (this.typstCache.length) {
+      for (const value of this.typstCache) {
+        console.log("value", value)
+        const { domKey, mathKey, code, displayMode } = value
+        const target = document.querySelector(domKey)
         if (!target) {
           continue
         }
         const res = await renderToSVGString(code, displayMode)
         //console.log("renderTypst get vNode", res.vNode)
-        target.innerHTML = toHTML(res.vNode)
+        switch(displayMode) {
+          case 2:
+            target.innerHTML = toHTML(res.vNode)
+            break
+          case 1:
+            target.innerHTML = toHTML(res.vNode)
+            break
+          case 0: {
+            const candidates = target.querySelectorAll(`span.${CLASS_OR_ID.AG_MATH}`)
+            for (const candidate of candidates) {
+              const text = candidate.querySelector(`span.${CLASS_OR_ID.AG_INLINE_RULE}.${CLASS_OR_ID.AG_MATH_TEXT}`)
+              if(text.innerHTML === code) {
+                const realTarget = candidate.querySelector(`span.${CLASS_OR_ID.AG_MATH_RENDER}`);
+                realTarget.innerHTML = toHTML(res.vNode)
+              }
+            }
+            break
+          }
+        }
         this.loadMathMap.set(mathKey, res.vNode)
       }
-      this.typstCache.clear()
+      this.typstCache = []
     }
   }
 

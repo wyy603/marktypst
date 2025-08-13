@@ -21,11 +21,11 @@ async function initializeTypst() {
   try {
     $typst.setCompilerInitOptions({
       getModule: () =>
-        'https://cdn.jsdelivr.net/npm/@myriaddreamin/typst-ts-web-compiler/pkg/typst_ts_web_compiler_bg.wasm'
+        '@myriaddreamin/typst-ts-web-compiler/pkg/typst_ts_web_compiler_bg.wasm'
     })
     $typst.setRendererInitOptions({
       getModule: () =>
-        'https://cdn.jsdelivr.net/npm/@myriaddreamin/typst-ts-renderer/pkg/typst_ts_renderer_bg.wasm'
+        '@myriaddreamin/typst-ts-renderer/pkg/typst_ts_renderer_bg.wasm'
     })
   } catch (err) {
     
@@ -68,12 +68,12 @@ function replaceSlashInAttrs(vnode) {
     if (sel.substr(0, 4) === 'path') {
       const start = sel.indexOf('#') + 1;
       const end = sel.indexOf('.', start);
-      console.log("path", sel.slice(start, end))
-      vnode.sel = sel.slice(0, start) + hashToAZString(sel.slice(start, end)) + sel.slice(end)
+      if(sel.slice(end) === ".outline_glyph") {
+        vnode.sel = sel.slice(0, start) + hashToAZString(sel.slice(start, end)) + sel.slice(end)
+      }
     }
     if (sel === 'use' && typeof attrs.href === 'string') {
       const start = attrs.href.indexOf('#') + 1;
-      console.log("use", attrs.href.slice(start))
       attrs.href = attrs.href.slice(0, start) + hashToAZString(attrs.href.slice(start))
     }
   }
@@ -86,7 +86,8 @@ function replaceSlashInAttrs(vnode) {
 export async function renderToSVGString(code, displayMode) {
   await initializeTypst()
 
-  const inlineMathTemplate = `
+  let templates = [null, null, null];
+  templates[0] = `
 #show math.equation: set text(size: 18pt)
 #set page(height: auto, width: auto, margin: 0pt)
 
@@ -108,14 +109,21 @@ $pin("l1")${code}$
 ]
 `;
 
-    const displayMathTemplate = `
+  templates[1] = `
 #show math.equation: set text(size: 20pt)
 #set page(height: auto, width: auto, margin: 0pt)
 
 $ ${code} $
 `;
 
-  const mainContent = displayMode ? displayMathTemplate : inlineMathTemplate;
+  templates[2] = `
+#set text(size: 20pt)
+#set page(height: auto, width: auto, margin: 0pt)
+
+${code}
+`;
+
+  const mainContent = templates[displayMode]
 
   let svg;
   try {
@@ -130,9 +138,7 @@ $ ${code} $
   svg = svg.replace(/xmlns(:\w+)?="[^"]*"/g, '');
   svg = svg.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '');
   const vnode = htmlToVNode(svg)[0]
-  if (!displayMode) {
-    replaceSlashInAttrs(vnode)
-  }
+  replaceSlashInAttrs(vnode)
   return {
     ok: true,
     vNode: vnode

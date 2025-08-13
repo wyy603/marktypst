@@ -151,6 +151,23 @@ export default function renderLeafBlock (parent, block, activeBlocks, matches, u
         }
         break
       }
+      case 'typst': {
+        selector += `.${CLASS_OR_ID.AG_CONTAINER_PREVIEW}`
+        Object.assign(data.attrs, { spellcheck: 'false' })
+        if (code === '') {
+          children = '< Empty Typst Block >'
+          selector += `.${CLASS_OR_ID.AG_EMPTY}`
+        } else {
+          children = 'Loading kk...'
+          this.typstCache.push({
+            domKey: `#${block.key}`,
+            mathKey: key,
+            code,
+            displayMode: 2
+          })
+        }
+        break
+      }
       case 'multiplemath': {
         const key = `${code}_display_math`
         selector += `.${CLASS_OR_ID.AG_CONTAINER_PREVIEW}`
@@ -162,17 +179,16 @@ export default function renderLeafBlock (parent, block, activeBlocks, matches, u
           children = loadMathMap.get(key)
         } else {
           children = 'Loading...'
-          this.typstCache.set(`#${block.key}`, {
+          this.typstCache.push({
+            domKey: `#${block.key}`,
             mathKey: key,
             code,
-            displayMode: true
+            displayMode: 1
           })
-          //console.log("typstCache", this.typstCache.size)
           // try {
           //   const html = katex.renderToString(code, {
           //     displayMode: true
           //   })
-
           //   children = htmlToVNode(html)
           //   loadMathMap.set(key, children)
           // } catch (err) {

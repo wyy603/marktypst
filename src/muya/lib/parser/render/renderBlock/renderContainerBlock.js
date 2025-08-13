@@ -16,6 +16,7 @@ const PRE_BLOCK_HASH = {
   flowchart: `.${CLASS_OR_ID.AG_FLOWCHART}`,
   sequence: `.${CLASS_OR_ID.AG_SEQUENCE}`,
   plantuml: `.${CLASS_OR_ID.AG_PLANTUML}`,
+  typst: `.${CLASS_OR_ID.AG_TYPST}`,
   mermaid: `.${CLASS_OR_ID.AG_MERMAID}`,
   'vega-lite': `.${CLASS_OR_ID.AG_VEGA_LITE}`
 }
@@ -154,7 +155,7 @@ export default function renderContainerBlock (parent, block, activeBlocks, match
     }
 
     if (
-      /html|multiplemath|flowchart|mermaid|sequence|plantuml|vega-lite/.test(functionType)
+      /html|multiplemath|flowchart|mermaid|sequence|plantuml|typst|vega-lite/.test(functionType)
     ) {
       selector += `.${CLASS_OR_ID.AG_CONTAINER_BLOCK}`
       Object.assign(data.attrs, { spellcheck: 'false' })
@@ -174,7 +175,7 @@ export default function renderContainerBlock (parent, block, activeBlocks, match
     Object.assign(data.dataset, { role: functionType })
     selector += PRE_BLOCK_HASH[block.functionType]
 
-    if (/html|multiplemath|mermaid|flowchart|vega-lite|sequence|plantuml/.test(functionType)) {
+    if (/html|multiplemath|mermaid|flowchart|vega-lite|typst|sequence|plantuml/.test(functionType)) {
       const codeBlock = block.children[0]
       const code = codeBlock.children.map(line => line.text).join('\n')
       this.codeCache.set(block.key, code)

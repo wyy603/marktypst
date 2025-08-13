@@ -423,6 +423,7 @@ const backspaceCtrl = ContentState => {
           case 'mermaid':
           case 'sequence':
           case 'plantuml':
+          case 'typst':
           case 'vega-lite':
           case 'html':
             referenceBlock = this.getParent(preBlock)

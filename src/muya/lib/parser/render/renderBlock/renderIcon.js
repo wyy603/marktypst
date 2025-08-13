@@ -22,6 +22,7 @@ import sequenceIcon from '../../../assets/pngicon/sequence/2.png'
 import plantumlIcon from '../../../assets/pngicon/plantuml/2.png'
 import mermaidIcon from '../../../assets/pngicon/mermaid/2.png'
 import vegaIcon from '../../../assets/pngicon/chart/2.png'
+import typstIcon from '../../../assets/pngicon/typst/2.png'
 import footnoteIcon from '../../../assets/pngicon/footnote/2.png'
 
 const FUNCTION_TYPE_HASH = {
@@ -29,6 +30,7 @@ const FUNCTION_TYPE_HASH = {
   flowchart: flowchartIcon,
   sequence: sequenceIcon,
   plantuml: plantumlIcon,
+  typst: typstIcon,
   'vega-lite': vegaIcon,
   table: newTableIcon,
   html: htmlIcon,

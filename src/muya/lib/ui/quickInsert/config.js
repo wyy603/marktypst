@@ -20,6 +20,7 @@ import sequenceIcon from '../../assets/pngicon/sequence/2.png'
 import plantumlIcon from '../../assets/pngicon/plantuml/2.png'
 import mermaidIcon from '../../assets/pngicon/mermaid/2.png'
 import vegaIcon from '../../assets/pngicon/chart/2.png'
+import typstIcon from '../../assets/pngicon/typst/2.png'
 import { isOsx } from '../../config'
 
 const COMMAND_KEY = isOsx ? '⌘' : 'Ctrl'
@@ -155,6 +156,11 @@ export const quickInsertObj = {
     subTitle: 'Render sequence diagram by js-sequence.',
     label: 'sequence',
     icon: sequenceIcon
+  }, {
+    title: 'Typst',
+    subTitle: 'Render typst',
+    label: 'typst',
+    icon: typstIcon
   }, {
     title: 'PlantUML Diagram',
     subTitle: 'Render PlantUML diagrams',

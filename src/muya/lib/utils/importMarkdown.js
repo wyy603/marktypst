@@ -180,7 +180,7 @@ const importRegister = ContentState => {
             value = value.replace(/\n+$/, '')
               .replace(/^\n+/, '')
           }
-          if (/mermaid|flowchart|vega-lite|sequence|plantuml/.test(lang)) {
+          if (/mermaid|flowchart|vega-lite|typst|sequence|plantuml/.test(lang)) {
             block = this.createContainerBlock(lang, value)
             this.appendChild(parentList[0], block)
           } else {
